@@ -1,5 +1,6 @@
 package bank;
 
+import common.ConditionDTO;
 import common.ProductDTO;
 import org.apache.ibatis.session.SqlSession;
 
@@ -22,5 +23,42 @@ public class ProductService {
 
         return productList;
 
+    }
+
+    public List<ProductDTO> selectDepositAll() {
+
+        SqlSession sqlSession = getSqlSession();
+
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+        List<ProductDTO> productList = productMapper.selectDepositAll();
+
+        sqlSession.close();
+
+        return productList;
+    }
+
+    public List<ProductDTO> depositPrice(int price) {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        List<ProductDTO> productList = productMapper.depositPrice(price);
+
+        sqlSession.close();
+
+        return productList;
+    }
+
+
+    public List<ProductDTO> searchMenu(ConditionDTO condition) {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        List<ProductDTO> productList = productMapper.searchMenu(condition);
+
+        sqlSession.close();
+
+        return productList;
     }
 }

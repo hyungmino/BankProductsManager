@@ -33,11 +33,76 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
              , PRODUCT_INTEREST_RATE
              , CATEGORY_CODE
              , PRODUCT_PERIOD_YEAR
-             , PRODUCT_PERIOD_YEAR
              , PRODUCT_AGE
              , PRODUCT_PRICE
         FROM TBL_PRODUCT
         ORDER BY PRODUCT_CODE
+    </select>
+
+    <select id="selectDepositAll" resultMap="selectAllMenu">
+        SELECT
+               PRODUCT_CODE
+             , PRODUCT_NAME
+             , PRODUCT_INTEREST_RATE
+             , CATEGORY_CODE
+             , PRODUCT_PERIOD_YEAR
+             , PRODUCT_AGE
+             , PRODUCT_PRICE
+          FROM TBL_PRODUCT
+         <where>
+             PRODUCT_NAME LIKE '%' || '예금' || '%'
+         </where>
+    </select>
+
+    <select id="depositPrice" parameterType="_int" resultMap="selectAllMenu">
+        SELECT
+               PRODUCT_CODE
+             , PRODUCT_NAME
+             , PRODUCT_INTEREST_RATE
+             , CATEGORY_CODE
+             , PRODUCT_PERIOD_YEAR
+             , PRODUCT_AGE
+             , PRODUCT_PRICE
+        FROM TBL_PRODUCT
+       WHERE PRODUCT_NAME LIKE '%' || '예금' || '%'
+       <if test="price gte 0 and price lte 500">
+           <![CDATA[
+           AND PRODUCT_PRICE < #{ price }
+           ]]>
+       </if>
+        <if test="price gte 500 and price lt 1000">
+            AND PRODUCT_PRICE BETWEEN 500 AND #{ price }
+        </if>
+        <if test="price gte 1000 and price lt 1500">
+            AND PRODUCT_PRICE BETWEEN 1000 AND #{ price }
+        </if>
+        <if test="price gte 1500 and price lte 2000">
+            AND PRODUCT_PRICE BETWEEN 1500 AND #{ price }
+        </if>
+        <if test="price gt 2000">
+            AND PRODUCT_PRICE BETWEEN 2000 AND #{ price }
+        </if>
+        ORDER BY PRODUCT_PRICE
+
+    </select>
+    
+    <select id="searchMenu" resultMap="selectAllMenu" parameterType="common.ProductDTO">
+        SELECT
+               PRODUCT_CODE
+             , PRODUCT_NAME
+             , PRODUCT_INTEREST_RATE
+             , CATEGORY_CODE
+             , PRODUCT_PERIOD_YEAR
+             , PRODUCT_AGE
+             , PRODUCT_PRICE
+          FROM TBL_PRODUCT
+        <if test="condition == 'interestRate'">
+            PRODUCT_INTEREST_RATE LIKE '%' || #{ value } || '%'
+        </if>
+        <if test="condition == 'age'">
+            PRODUCT_AGE LIKE '%' || #{ value } || '%'
+        </if>
+
     </select>
 
     <!-- 파라미터가 한 개인 경우 바인딩 되는 이름은 무엇을 작성해도 상관이 없다. 다만 의미적으로 맞춰서 code라고 작성한다.

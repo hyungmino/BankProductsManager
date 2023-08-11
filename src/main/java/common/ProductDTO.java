@@ -13,6 +13,7 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
+
     public ProductDTO(int productCode, String productName, int interestRate, int categoryCode, int period, int age, int price) {
         this.productCode = productCode;
         this.productName = productName;
