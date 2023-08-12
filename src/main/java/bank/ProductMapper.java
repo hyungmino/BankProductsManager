@@ -12,6 +12,18 @@ public interface ProductMapper {
 
     List<ProductDTO> depositPrice(int price);
 
-    List<ProductDTO> searchMenu(ConditionDTO condition);
 
+    List<ProductDTO> maxInterestRate();
+
+    List<ProductDTO> selectInstallmentSavingAll();
+
+    List<ProductDTO> installmentSavingPrice(int price);
+
+    List<ProductDTO> installmentSavingMaxInterestRate();
+
+    List<ProductDTO> selectLoanAll();
+
+    List<ProductDTO> loanPrice(int price);
+
+    List<ProductDTO> loanMinInterestRate();
 }

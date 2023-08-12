@@ -50,12 +50,85 @@ public class ProductService {
     }
 
 
-    public List<ProductDTO> searchMenu(ConditionDTO condition) {
+    public List<ProductDTO> maxInterestRate() {
 
         SqlSession sqlSession = getSqlSession();
         productMapper = sqlSession.getMapper(ProductMapper.class);
 
-        List<ProductDTO> productList = productMapper.searchMenu(condition);
+        List<ProductDTO> productList = productMapper.maxInterestRate();
+
+        sqlSession.close();
+
+        return productList;
+    }
+
+    public List<ProductDTO> selectInstallmentSavingAll() {
+
+        SqlSession sqlSession = getSqlSession();
+
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+        List<ProductDTO> productList = productMapper.selectInstallmentSavingAll();
+
+        sqlSession.close();
+
+        return productList;
+    }
+
+    public List<ProductDTO> installmentSavingPrice(int price) {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        List<ProductDTO> productList = productMapper.installmentSavingPrice(price);
+
+        sqlSession.close();
+
+        return productList;
+    }
+
+    public List<ProductDTO> installmentSavingMaxInterestRate() {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        List<ProductDTO> productList = productMapper.installmentSavingMaxInterestRate();
+
+        sqlSession.close();
+
+        return productList;
+    }
+
+    public List<ProductDTO> selectLoanAll() {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        List<ProductDTO> productList = productMapper.selectLoanAll();
+
+        sqlSession.close();
+
+        return productList;
+
+    }
+
+    public List<ProductDTO> loanPrice(int price) {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        List<ProductDTO> productList = productMapper.loanPrice(price);
+
+        sqlSession.close();
+
+        return productList;
+    }
+
+    public List<ProductDTO> loanMinInterestRate() {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        List<ProductDTO> productList = productMapper.loanMinInterestRate();
 
         sqlSession.close();
 

@@ -65,7 +65,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
              , PRODUCT_PRICE
         FROM TBL_PRODUCT
        WHERE PRODUCT_NAME LIKE '%' || '예금' || '%'
-       <if test="price gte 0 and price lte 500">
+       <if test="price gte 0 and price lt 500">
            <![CDATA[
            AND PRODUCT_PRICE < #{ price }
            ]]>
@@ -86,7 +86,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
 
     </select>
     
-    <select id="searchMenu" resultMap="selectAllMenu" parameterType="common.ProductDTO">
+    <select id="maxInterestRate" resultMap="selectAllMenu">
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
@@ -96,14 +96,152 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
              , PRODUCT_AGE
              , PRODUCT_PRICE
           FROM TBL_PRODUCT
-        <if test="condition == 'interestRate'">
+        <where>
+            PRODUCT_NAME LIKE '%' || '예금' || '%'
+        </where>
+         ORDER BY PRODUCT_INTEREST_RATE DESC
+    </select>
+
+    <select id="selectInstallmentSavingAll" resultMap="selectAllMenu">
+        SELECT
+               PRODUCT_CODE
+             , PRODUCT_NAME
+             , PRODUCT_INTEREST_RATE
+             , CATEGORY_CODE
+             , PRODUCT_PERIOD_YEAR
+             , PRODUCT_AGE
+             , PRODUCT_PRICE
+          FROM TBL_PRODUCT
+        <where>
+            PRODUCT_NAME LIKE '%' || '적금' || '%'
+        </where>
+    </select>
+
+    <select id="installmentSavingPrice" parameterType="_int" resultMap="selectAllMenu">
+        SELECT
+              PRODUCT_CODE
+            , PRODUCT_NAME
+            , PRODUCT_INTEREST_RATE
+            , CATEGORY_CODE
+            , PRODUCT_PERIOD_YEAR
+            , PRODUCT_AGE
+            , PRODUCT_PRICE
+         FROM TBL_PRODUCT
+        WHERE PRODUCT_NAME LIKE '%' || '적금' || '%'
+        <if test="price gte 0 and price lt 100">
+            <![CDATA[
+               AND PRODUCT_PRICE < #{ price }
+               ]]>
+        </if>
+        <if test="price gte 100 and price lt 200">
+            AND PRODUCT_PRICE BETWEEN 100 AND #{ price }
+        </if>
+        <if test="price gte 200 and price lt 300">
+            AND PRODUCT_PRICE BETWEEN 200 AND #{ price }
+        </if>
+        <if test="price gte 300 and price lt 400">
+            AND PRODUCT_PRICE BETWEEN 300 AND #{ price }
+        </if>
+        <if test="price gt 500">
+            AND PRODUCT_PRICE BETWEEN 500 AND #{ price }
+        </if>
+        ORDER BY PRODUCT_PRICE
+    </select>
+
+    <select id="installmentSavingMaxInterestRate" resultMap="selectAllMenu">
+        SELECT
+               PRODUCT_CODE
+             , PRODUCT_NAME
+             , PRODUCT_INTEREST_RATE
+             , CATEGORY_CODE
+             , PRODUCT_PERIOD_YEAR
+             , PRODUCT_AGE
+             , PRODUCT_PRICE
+          FROM TBL_PRODUCT
+        <where>
+            PRODUCT_NAME LIKE '%' || '적금' || '%'
+        </where>
+        ORDER BY PRODUCT_INTEREST_RATE DESC
+    </select>
+
+    <select id="selectLoanAll" resultMap="selectAllMenu">
+        SELECT
+              PRODUCT_CODE
+            , PRODUCT_NAME
+            , PRODUCT_INTEREST_RATE
+            , CATEGORY_CODE
+            , PRODUCT_PERIOD_YEAR
+            , PRODUCT_AGE
+            , PRODUCT_PRICE
+         FROM TBL_PRODUCT
+        <where>
+            PRODUCT_NAME LIKE '%' || '대출' || '%'
+        </where>
+    </select>
+
+    <select id="loanPrice" resultMap="selectAllMenu">
+        SELECT
+               PRODUCT_CODE
+             , PRODUCT_NAME
+             , PRODUCT_INTEREST_RATE
+             , CATEGORY_CODE
+             , PRODUCT_PERIOD_YEAR
+             , PRODUCT_AGE
+             , PRODUCT_PRICE
+          FROM TBL_PRODUCT
+        WHERE PRODUCT_NAME LIKE '%' || '대출' || '%'
+        <if test="price gte 0 and price lt 2000">
+            <![CDATA[
+               AND PRODUCT_PRICE < #{ price }
+               ]]>
+        </if>
+        <if test="price gte 2000 and price lt 4000">
+            AND PRODUCT_PRICE BETWEEN 2000 AND #{ price }
+        </if>
+        <if test="price gte 4000 and price lt 6000">
+            AND PRODUCT_PRICE BETWEEN 4000 AND #{ price }
+        </if>
+        <if test="price gte 6000">
+            AND PRODUCT_PRICE BETWEEN 6000 AND #{ price }
+        </if>
+        ORDER BY PRODUCT_PRICE
+    </select>
+
+    <select id="loanMinInterestRate" resultMap="selectAllMenu">
+        SELECT
+               PRODUCT_CODE
+             , PRODUCT_NAME
+             , PRODUCT_INTEREST_RATE
+             , CATEGORY_CODE
+             , PRODUCT_PERIOD_YEAR
+             , PRODUCT_AGE
+             , PRODUCT_PRICE
+          FROM TBL_PRODUCT
+        <where>
+            PRODUCT_NAME LIKE '%' || '대출' || '%'
+        </where>
+        ORDER BY PRODUCT_INTEREST_RATE
+    </select>
+    <!--<select id="searchMenu" resultMap="selectAllMenu" parameterType="common.ConditionDTO">
+        SELECT
+               PRODUCT_CODE
+             , PRODUCT_NAME
+             , PRODUCT_INTEREST_RATE
+             , CATEGORY_CODE
+             , PRODUCT_PERIOD_YEAR
+             , PRODUCT_AGE
+             , PRODUCT_PRICE
+          FROM TBL_PRODUCT
+        <if test="condition == 'rate'">
             PRODUCT_INTEREST_RATE LIKE '%' || #{ value } || '%'
         </if>
         <if test="condition == 'age'">
             PRODUCT_AGE LIKE '%' || #{ value } || '%'
         </if>
+        ORDER BY PRODUCT_INTEREST_RATE
+    </select>-->
 
-    </select>
+
 
     <!-- 파라미터가 한 개인 경우 바인딩 되는 이름은 무엇을 작성해도 상관이 없다. 다만 의미적으로 맞춰서 code라고 작성한다.
          ex) parameterType 적을 때 mybatis규칙상 _쓰고 타입적기
