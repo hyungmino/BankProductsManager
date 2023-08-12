@@ -1,9 +1,9 @@
 package bank;
 
-import common.ConditionDTO;
 import common.ProductDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductMapper {
     List<ProductDTO> selectAllMenu();
@@ -11,7 +11,6 @@ public interface ProductMapper {
     List<ProductDTO> selectDepositAll();
 
     List<ProductDTO> depositPrice(int price);
-
 
     List<ProductDTO> maxInterestRate();
 
@@ -26,4 +25,12 @@ public interface ProductMapper {
     List<ProductDTO> loanPrice(int price);
 
     List<ProductDTO> loanMinInterestRate();
+
+    List<ProductDTO> searchProductByNameOrCode(Map<String, Object> criteria);
+
+    int modifyProduct(Map<String, Object> criteria);
+
+    int insertProduct(ProductDTO product);
+
+    int deleteProduct(int productCode);
 }

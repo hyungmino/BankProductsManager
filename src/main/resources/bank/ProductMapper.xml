@@ -14,7 +14,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
 
 
     <!-- 조회한 컬럼과 DTO를 매핑시키기 위한 설정이다. -->
-    <resultMap id="selectAllMenu" type="common.ProductDTO">
+    <resultMap id="productResultMap" type="common.ProductDTO">
         <id property="productCode" column="PRODUCT_CODE"/>   <!-- id는 PK -->
         <result property="productName" column="PRODUCT_NAME"/>    <!-- property에는 MenuDTO의 필드명 일치 -->
         <result property="interestRate" column="PRODUCT_INTEREST_RATE"/>
@@ -25,7 +25,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
 
     </resultMap>
 
-    <select id="selectAllMenu" resultMap="selectAllMenu">
+    <select id="selectAllMenu" resultMap="productResultMap">
         <!-- resultMap에 설정한 값을 그대로 가져가 실행하겠다라는 의미 -->
         SELECT
                PRODUCT_CODE
@@ -39,7 +39,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
         ORDER BY PRODUCT_CODE
     </select>
 
-    <select id="selectDepositAll" resultMap="selectAllMenu">
+    <select id="selectDepositAll" resultMap="productResultMap">
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
@@ -54,7 +54,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
          </where>
     </select>
 
-    <select id="depositPrice" parameterType="_int" resultMap="selectAllMenu">
+    <select id="depositPrice" parameterType="_int" resultMap="productResultMap">
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
@@ -86,7 +86,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
 
     </select>
     
-    <select id="maxInterestRate" resultMap="selectAllMenu">
+    <select id="maxInterestRate" resultMap="productResultMap">
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
@@ -102,7 +102,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
          ORDER BY PRODUCT_INTEREST_RATE DESC
     </select>
 
-    <select id="selectInstallmentSavingAll" resultMap="selectAllMenu">
+    <select id="selectInstallmentSavingAll" resultMap="productResultMap">
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
@@ -117,7 +117,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
         </where>
     </select>
 
-    <select id="installmentSavingPrice" parameterType="_int" resultMap="selectAllMenu">
+    <select id="installmentSavingPrice" parameterType="_int" resultMap="productResultMap">
         SELECT
               PRODUCT_CODE
             , PRODUCT_NAME
@@ -148,7 +148,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
         ORDER BY PRODUCT_PRICE
     </select>
 
-    <select id="installmentSavingMaxInterestRate" resultMap="selectAllMenu">
+    <select id="installmentSavingMaxInterestRate" resultMap="productResultMap">
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
@@ -164,7 +164,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
         ORDER BY PRODUCT_INTEREST_RATE DESC
     </select>
 
-    <select id="selectLoanAll" resultMap="selectAllMenu">
+    <select id="selectLoanAll" resultMap="productResultMap">
         SELECT
               PRODUCT_CODE
             , PRODUCT_NAME
@@ -179,7 +179,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
         </where>
     </select>
 
-    <select id="loanPrice" resultMap="selectAllMenu">
+    <select id="loanPrice" resultMap="productResultMap">
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
@@ -207,7 +207,7 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
         ORDER BY PRODUCT_PRICE
     </select>
 
-    <select id="loanMinInterestRate" resultMap="selectAllMenu">
+    <select id="loanMinInterestRate" resultMap="productResultMap">
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
@@ -222,7 +222,8 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
         </where>
         ORDER BY PRODUCT_INTEREST_RATE
     </select>
-    <!--<select id="searchMenu" resultMap="selectAllMenu" parameterType="common.ConditionDTO">
+
+    <select id="searchProductByNameOrCode" parameterType="hashmap" resultMap="productResultMap">
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
@@ -232,73 +233,70 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
              , PRODUCT_AGE
              , PRODUCT_PRICE
           FROM TBL_PRODUCT
-        <if test="condition == 'rate'">
-            PRODUCT_INTEREST_RATE LIKE '%' || #{ value } || '%'
-        </if>
-        <if test="condition == 'age'">
-            PRODUCT_AGE LIKE '%' || #{ value } || '%'
-        </if>
-        ORDER BY PRODUCT_INTEREST_RATE
-    </select>-->
-
-
-
-    <!-- 파라미터가 한 개인 경우 바인딩 되는 이름은 무엇을 작성해도 상관이 없다. 다만 의미적으로 맞춰서 code라고 작성한다.
-         ex) parameterType 적을 때 mybatis규칙상 _쓰고 타입적기
-         parameterType 속성은 optional이다.
-         resultMap : 위에서 생성한 ResultMap을 리턴 타입으로 사용하는 경우
-         resultType : 이미 정의 되어 있는 타입을 이용하여 리턴 타입으로 사용하는 경우 ex)java.util.date
-         -->
-   <!-- <select id="selectMenuByCode" parameterType="_int" resultMap="menuResultMap">
-        SELECT
-        MENU_CODE
-        , MENU_NAME
-        , MENU_PRICE
-        , CATEGORY_CODE
-        , ORDERABLE_STATUS
-        FROM TBL_MENU
-        WHERE MENU_CODE = #{ code }    &lt;!&ndash; #{} #과{ 사이는 띄우지 말기 {}안에 값은 DTO값과 일치해야한다. &ndash;&gt;
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="nameValue != null">
+                PRODUCT_NAME LIKE '%' || #{ nameValue } || '%'
+            </if>
+            <if test="codeValue != null">
+                CATEGORY_CODE LIKE '%' || #{ codeValue } || '%'
+            </if>
+        </trim>
     </select>
 
-    &lt;!&ndash;
-    insert, update, delete의 경우 resultType은 작성하지 않고, 기본적으로 _int 로 수행 결과를 반환한다.
-    파라미터로 전달 된 DTO의 필드명으로 값을 바인딩 해야 하며, getter를 내부적으로 이용하므로 getter가 없으면 에러가 발생한다.
-    VALUES안에 #{} 안에 값들은 DTO 필드에 선언한 필드값과 일치해야한다.
-     &ndash;&gt;
-    <insert id="insertMenu" parameterType="com.ohgiraffers.section03.remix.MenuDTO">
+    <update id="modifyProduct" parameterType="hashmap">
+        UPDATE
+               TBL_PRODUCT
+        <trim prefix="SET" prefixOverrides=",">
+            <if test="name =! null and name != ''">
+                PRODUCT_NAME = #{ productName }
+            </if>
+            <if test="rate =! null and rate != ''">
+                , PRODUCT_INTEREST_RATE = #{ interestRate }
+            </if>
+            <if test="categoryCode =! null and categoryCode gt 0">
+                , CATEGORY_CODE = #{ categoryCode }
+            </if>
+            <if test="period =! null and period != ''">
+                , PRODUCT_PERIOD_YEAR = #{ period }
+            </if>
+            <if test="age =! null and period != ''">
+                , PRODUCT_AGE = #{ age }
+            </if>
+            <if test="price =! null and price != ''">
+                , PRODUCT_PRICE = #{ price }
+            </if>
+        </trim>
+        WHERE PRODUCT_CODE = #{ productCode }
+    </update>
+
+    <insert id="insertProduct" parameterType="common.ProductDTO">
         INSERT
-        INTO TBL_MENU
+        INTO TBL_PRODUCT
         (
-        MENU_CODE
-        , MENU_NAME
-        , MENU_PRICE
+        PRODUCT_CODE
+        , PRODUCT_NAME
+        , PRODUCT_INTEREST_RATE
         , CATEGORY_CODE
-        , ORDERABLE_STATUS
+        , PRODUCT_PERIOD_YEAR
+        , PRODUCT_AGE
+        , PRODUCT_PRICE
         )
         VALUES
         (
-        SEQ_MENU_CODE.NEXTVAL
-        , #{ name }
-        , #{ price }
+        SEQ_PRODUCT_CODE.NEXTVAL
+        , #{ productName }
+        , #{ interestRate }
         , #{ categoryCode }
-        , 'Y'
+        , #{ period }
+        , #{ age }
+        , #{ price }
         )
-
     </insert>
 
-    <update id="updateMenu" parameterType="com.ohgiraffers.section03.remix.MenuDTO">
-        UPDATE
-        TBL_MENU
-        SET MENU_NAME = #{ name }
-        , MENU_PRICE = #{ price }
-        , CATEGORY_CODE = #{ categoryCode }
-        WHERE MENU_CODE = #{ code }
-    </update>
-
-    <delete id="deleteMenu" parameterType="_int">
+    <delete id="deleteProduct" parameterType="_int">
         DELETE
-        FROM TBL_MENU
-        WHERE MENU_CODE = #{ code }
-    </delete>-->
+          FROM TBL_PRODUCT
+         WHERE PRODUCT_CODE = #{ productCode }
+    </delete>
 
 </mapper>

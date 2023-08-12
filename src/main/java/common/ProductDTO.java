@@ -1,10 +1,12 @@
 package common;
 
+import java.util.Map;
+
 public class ProductDTO {
 
     private int productCode;
     private String productName;
-    private int interestRate;
+    private double interestRate;
     private int categoryCode;
     private int period;
     private int age;
@@ -13,8 +15,7 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-
-    public ProductDTO(int productCode, String productName, int interestRate, int categoryCode, int period, int age, int price) {
+    public ProductDTO(int productCode, String productName, double interestRate, int categoryCode, int period, int age, int price) {
         this.productCode = productCode;
         this.productName = productName;
         this.interestRate = interestRate;
@@ -22,6 +23,9 @@ public class ProductDTO {
         this.period = period;
         this.age = age;
         this.price = price;
+    }
+
+    public ProductDTO(Map<String, Object> criteria) {
     }
 
     public int getProductCode() {
@@ -40,11 +44,11 @@ public class ProductDTO {
         this.productName = productName;
     }
 
-    public int getInterestRate() {
+    public double getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(int interestRate) {
+    public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
     }
 

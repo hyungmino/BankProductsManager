@@ -1,10 +1,10 @@
 package bank;
 
-import common.ConditionDTO;
 import common.ProductDTO;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Map;
 
 import static common.Template.getSqlSession;
 
@@ -133,5 +133,71 @@ public class ProductService {
         sqlSession.close();
 
         return productList;
+    }
+
+    public List<ProductDTO> searchProductByNameOrCode(Map<String, Object> criteria) {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        List<ProductDTO> productList = productMapper.searchProductByNameOrCode(criteria);
+
+        sqlSession.close();
+
+        return productList;
+
+    }
+
+
+    public boolean modifyProduct(Map<String, Object> criteria) {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        int result = productMapper.modifyProduct(criteria);
+
+        if(result > 0){
+            sqlSession.commit();
+        } else {
+            sqlSession.rollback();
+        }
+
+        sqlSession.close();
+
+        return result > 0;
+    }
+
+    public boolean registProduct(ProductDTO product) {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        int result = productMapper.insertProduct(product);
+
+        if(result > 0){
+            sqlSession.commit();
+        } else {
+            sqlSession.rollback();
+        }
+
+        sqlSession.close();
+
+        return result > 0;
+    }
+
+    public boolean deleteProductByCode(int productCode) {
+
+        SqlSession sqlSession = getSqlSession();
+        productMapper = sqlSession.getMapper(ProductMapper.class);
+
+        int result = productMapper.deleteProduct(productCode);
+
+        if(result > 0){
+            sqlSession.commit();
+        } else {
+            sqlSession.rollback();
+        }
+        sqlSession.close();
+        return result > 0;
     }
 }
