@@ -175,6 +175,7 @@ public class Application {
 
         Scanner sc = new Scanner(System.in);
         ProductController productController = new ProductController();
+        ProductService productService = new ProductService();
 
         do {
             System.out.println("=============== 상품관리하기 =================");
@@ -188,7 +189,7 @@ public class Application {
 
             switch (no){
                 case 1 :  productController.searchProductByNameOrCode(inputSearchMap()); break;
-                case 2 :  productController.modifyProduct(inputChangeInfo()); break;
+                case 2 :  productService.modifyProduct(inputChangeInfo()); break;
                 case 3 :  productController.registProduct(inputInfo()); break;
                 case 4 :  productController.deleteProduct(inputProductCode()); break;
                 case 9 : return;
@@ -297,7 +298,7 @@ public class Application {
     private static Map<String, String> inputProductCode() {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("상품 코드를 입력하세요 : ");
+        System.out.print("상품 코드를 입력하세요 : ");
         String productCode = sc.nextLine();
 
         Map<String, String> parameter = new HashMap<>();

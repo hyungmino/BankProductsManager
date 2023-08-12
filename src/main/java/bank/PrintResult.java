@@ -27,7 +27,7 @@ public class PrintResult {
             case "insert" : errorMessage = "상품등록을 실패하였습니다."; break;
             case "delete" : errorMessage = "상품삭제를 실패하였습니다."; break;
         }
-
+        System.out.println(errorMessage);
 
     }
 
@@ -40,6 +40,6 @@ public class PrintResult {
             case "delete" : successMessage = "상품삭제를 성공했습니다."; break;
         }
 
-
+        System.out.println(successMessage);
     }
 }

@@ -142,7 +142,7 @@ public class ProductController {
         }
     }
 
-    public void modifyProduct(Map<String, Object> criteria) {
+    /*public void modifyProduct(Map<String, Object> criteria) {
 
 
         if (productService.modifyProduct(criteria)) {
@@ -151,12 +151,12 @@ public class ProductController {
             printResult.printErrorMessage("update");
         }
 
-    }
+    }*/
 
     public void registProduct(Map<String, String> criteria) {
 
         String productName = criteria.get("productName");
-        int interestRate = Integer.parseInt(criteria.get("interestRate"));
+        double interestRate = Double.parseDouble(criteria.get("interestRate"));
         int categoryCode = Integer.parseInt(criteria.get("categoryCode"));
         int period = Integer.parseInt(criteria.get("period"));
         int age = Integer.parseInt(criteria.get("age"));
