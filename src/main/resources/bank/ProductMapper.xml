@@ -246,23 +246,44 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
     <update id="modifyProduct" parameterType="hashmap">
         UPDATE
                TBL_PRODUCT
-        <trim prefix="SET" prefixOverrides=",">
-            <if test="name =! null and name != ''">
+        <!--<set>
+            <if test="productName != null and productName != ''">
                 PRODUCT_NAME = #{ productName }
             </if>
-            <if test="rate =! null and rate != ''">
-                , PRODUCT_INTEREST_RATE = #{ interestRate }
+             <if test="interestRate != null and interestRate != ''">
+                    , PRODUCT_INTEREST_RATE = #{ interestRate, jdbcType=NUMERIC }
+             </if>
+                <if test="categoryCode != null and categoryCode gt 0">
+                    , CATEGORY_CODE = #{ categoryCode }
+                </if>
+                <if test="period != null and period != ''">
+                    , PRODUCT_PERIOD_YEAR = #{ period }
+                </if>
+                <if test="age != null and age != ''">
+                    , PRODUCT_AGE = #{ age }
+                </if>
+                <if test="price != null and price != ''">
+                    , PRODUCT_PRICE = #{ price }
+                </if>
+        </set>
+        WHERE PRODUCT_CODE = #{ productCode }-->
+        <trim prefix="SET" prefixOverrides=",">
+            <if test="productName != null and productName != ''">
+                PRODUCT_NAME = #{ productName }
             </if>
-            <if test="categoryCode =! null and categoryCode gt 0">
+            <if test="interestRate != null and interestRate != ''">
+                , PRODUCT_INTEREST_RATE = #{ interestRate, jdbcType=NUMERIC }
+            </if>
+            <if test="categoryCode != null and categoryCode gt 0">
                 , CATEGORY_CODE = #{ categoryCode }
             </if>
-            <if test="period =! null and period != ''">
+            <if test="period != null and period != ''">
                 , PRODUCT_PERIOD_YEAR = #{ period }
             </if>
-            <if test="age =! null and period != ''">
+            <if test="age != null and age != ''">
                 , PRODUCT_AGE = #{ age }
             </if>
-            <if test="price =! null and price != ''">
+            <if test="price != null and price != ''">
                 , PRODUCT_PRICE = #{ price }
             </if>
         </trim>

@@ -149,7 +149,9 @@ public class ProductService {
     }
 
 
-    public boolean modifyProduct(Map<String, Object> criteria) {
+    public void modifyProduct(Map<String, Object> criteria) {
+
+        PrintResult printResult = new PrintResult();
 
         SqlSession sqlSession = getSqlSession();
         productMapper = sqlSession.getMapper(ProductMapper.class);
@@ -158,13 +160,15 @@ public class ProductService {
 
         if(result > 0){
             sqlSession.commit();
+            printResult.printSuccessMessage("update");
         } else {
             sqlSession.rollback();
+            printResult.printErrorMessage("update");
         }
 
         sqlSession.close();
 
-        return result > 0;
+
     }
 
     public boolean registProduct(ProductDTO product) {
