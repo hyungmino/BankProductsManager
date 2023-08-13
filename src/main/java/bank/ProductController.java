@@ -142,16 +142,6 @@ public class ProductController {
         }
     }
 
-    /*public void modifyProduct(Map<String, Object> criteria) {
-
-
-        if (productService.modifyProduct(criteria)) {
-            printResult.printSuccessMessage("update");
-        } else {
-            printResult.printErrorMessage("update");
-        }
-
-    }*/
 
     public void registProduct(Map<String, String> criteria) {
 

@@ -3,20 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--
-MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파일에 기재하는 방법
-1. Mapper 인터페이스와 동일한 패키지에 위치해야 한다.
-2. Mapper 인터페이스의 풀 네임을 네임스페이스로 지정해야 한다.
-3. Mapper 인터페이스와 XML의 이름이 동일해야 한다.
-4. 작성한 메소드이 이름과 id가 일치하고, 리턴 타입이 일치하는 쿼리문을 모두 작성해야 한다.
--->
+
 <mapper namespace="bank.ProductMapper">
 
 
-    <!-- 조회한 컬럼과 DTO를 매핑시키기 위한 설정이다. -->
+
     <resultMap id="productResultMap" type="common.ProductDTO">
-        <id property="productCode" column="PRODUCT_CODE"/>   <!-- id는 PK -->
-        <result property="productName" column="PRODUCT_NAME"/>    <!-- property에는 MenuDTO의 필드명 일치 -->
+        <id property="productCode" column="PRODUCT_CODE"/>
+        <result property="productName" column="PRODUCT_NAME"/>
         <result property="interestRate" column="PRODUCT_INTEREST_RATE"/>
         <result property="categoryCode" column="CATEGORY_CODE"/>
         <result property="period" column="PRODUCT_PERIOD_YEAR"/>
@@ -26,7 +20,6 @@ MenuMapper 인터페이스의 메소드 호출 시 실행 될 구문을 XML 파�
     </resultMap>
 
     <select id="selectAllMenu" resultMap="productResultMap">
-        <!-- resultMap에 설정한 값을 그대로 가져가 실행하겠다라는 의미 -->
         SELECT
                PRODUCT_CODE
              , PRODUCT_NAME
